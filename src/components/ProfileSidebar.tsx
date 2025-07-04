@@ -5,7 +5,7 @@ import {
   Mail, 
   Bell, 
   LogOut,
-  MapPin
+  Star
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,11 +18,10 @@ const ProfileSidebar = ({ onClose }: ProfileSidebarProps) => {
 
   const menuItems = [
     {
-      title: "Mis Viajes",
-      icon: MapPin,
+      title: "Resenas",
+      icon: Star,
       onClick: () => {
-        console.log('Navigating to trips page');
-        navigate('/trips');
+        console.log('Navigate to reviews');
         onClose();
       }
     },
