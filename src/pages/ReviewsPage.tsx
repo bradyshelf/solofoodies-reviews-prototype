@@ -1,9 +1,12 @@
+
 import { useState } from 'react';
 import { ArrowLeft, Star, MessageSquare, TrendingUp, Award, Languages } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 const ReviewsPage = () => {
   const navigate = useNavigate();
   const [language, setLanguage] = useState<'es' | 'en'>('es');
@@ -19,9 +22,12 @@ const ReviewsPage = () => {
       fiveStars: "5 Estrellas",
       ratingDistribution: "Distribución de Calificaciones",
       recentReviews: "Reseñas Recientes",
+      pendingReviews: "Por Completar",
       noReviews: "Aún no tienes reseñas",
       noReviewsDesc: "Completa tu primera colaboración para recibir reseñas de restaurantes.",
-      exploreCollabs: "Explorar Colaboraciones"
+      exploreCollabs: "Explorar Colaboraciones",
+      noPendingReviews: "No tienes reseñas pendientes",
+      noPendingReviewsDesc: "Todas tus colaboraciones han sido completadas y revisadas."
     },
     en: {
       title: "My Reviews",
@@ -32,9 +38,12 @@ const ReviewsPage = () => {
       fiveStars: "5 Stars",
       ratingDistribution: "Rating Distribution",
       recentReviews: "Recent Reviews",
+      pendingReviews: "To Complete",
       noReviews: "You don't have reviews yet",
       noReviewsDesc: "Complete your first collaboration to receive reviews from restaurants.",
-      exploreCollabs: "Explore Collaborations"
+      exploreCollabs: "Explore Collaborations",
+      noPendingReviews: "You have no pending reviews",
+      noPendingReviewsDesc: "All your collaborations have been completed and reviewed."
     }
   };
   const t = translations[language];
@@ -52,7 +61,8 @@ const ReviewsPage = () => {
       1: 0
     }
   };
-  const reviews = [{
+
+  const completedReviews = [{
     id: 1,
     rating: 5,
     feedback: language === 'es' ? "Excelente colaboración! El contenido fue de muy alta calidad y se entregó a tiempo. Muy profesional." : "Excellent collaboration! The content was of very high quality and delivered on time. Very professional.",
@@ -80,9 +90,29 @@ const ReviewsPage = () => {
     date: "2024-01-08",
     tags: language === 'es' ? ["Profesional", "Gran Alcance", "Resultados Excelentes"] : ["Professional", "Great Reach", "Excellent Results"]
   }];
+
+  const pendingReviews = [{
+    id: 4,
+    projectTitle: language === 'es' ? "Colaboración Menú Navideño - Café Delicias" : "Christmas Menu Collaboration - Café Delicias",
+    reviewerName: "Café Delicias",
+    reviewerType: "restaurant",
+    date: "2024-01-20",
+    status: "pending",
+    description: language === 'es' ? "Esperando revisión del restaurante" : "Waiting for restaurant review"
+  }, {
+    id: 5,
+    projectTitle: language === 'es' ? "Lanzamiento Brunch - Restaurante Sol" : "Brunch Launch - Restaurante Sol",
+    reviewerName: "Restaurante Sol",
+    reviewerType: "restaurant",
+    date: "2024-01-18",
+    status: "pending",
+    description: language === 'es' ? "Colaboración completada, pendiente de revisión" : "Collaboration completed, pending review"
+  }];
+
   const handleBack = () => {
     navigate('/');
   };
+
   const renderStars = (rating: number, size: 'sm' | 'md' | 'lg' = 'md') => {
     const sizeClasses = {
       sm: 'w-3 h-3',
@@ -93,6 +123,7 @@ const ReviewsPage = () => {
         {[1, 2, 3, 4, 5].map(star => <Star key={star} className={`${sizeClasses[size]} ${star <= rating ? 'fill-[#FFC107] text-[#FFC107]' : 'text-gray-300'}`} />)}
       </div>;
   };
+
   return <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-4">
@@ -148,9 +179,25 @@ const ReviewsPage = () => {
             </CardContent>
           </Card>
 
-          
+          <Card className="bg-white">
+            <CardContent className="p-4 text-center">
+              <TrendingUp className="w-6 h-6 mx-auto mb-2 text-[#E94E77]" />
+              <div className="text-2xl font-bold text-gray-900">
+                {reviewStats.mostCommonRating}
+              </div>
+              <div className="text-xs text-gray-500">{t.mostCommon}</div>
+            </CardContent>
+          </Card>
 
-          
+          <Card className="bg-white">
+            <CardContent className="p-4 text-center">
+              <Award className="w-6 h-6 mx-auto mb-2 text-[#E94E77]" />
+              <div className="text-2xl font-bold text-gray-900">
+                {reviewStats.ratingDistribution[5]}
+              </div>
+              <div className="text-xs text-gray-500">{t.fiveStars}</div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Rating Distribution */}
@@ -178,42 +225,106 @@ const ReviewsPage = () => {
           </CardContent>
         </Card>
 
-        {/* Reviews List */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">{t.recentReviews}</h2>
+        {/* Reviews Tabs */}
+        <Tabs defaultValue="pending" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="pending">{t.pendingReviews}</TabsTrigger>
+            <TabsTrigger value="completed">{t.recentReviews}</TabsTrigger>
+          </TabsList>
           
-          {reviews.map(review => <Card key={review.id} className="bg-white">
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      {renderStars(review.rating)}
-                      <span className="text-sm text-gray-500">
-                        {new Date(review.date).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US')}
-                      </span>
+          <TabsContent value="pending" className="space-y-4 mt-6">
+            {pendingReviews.length > 0 ? (
+              pendingReviews.map(review => (
+                <Card key={review.id} className="bg-white">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                          <span className="text-sm text-gray-500">
+                            {new Date(review.date).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US')}
+                          </span>
+                        </div>
+                        <h3 className="font-medium text-gray-900 mb-1">
+                          {review.projectTitle}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-1">
+                          {language === 'es' ? 'por' : 'by'} {review.reviewerName}
+                        </p>
+                        <p className="text-sm text-yellow-600">
+                          {review.description}
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="font-medium text-gray-900 mb-1">
-                      {review.projectTitle}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-1">
-                      {language === 'es' ? 'por' : 'by'} {review.reviewerName}
-                    </p>
-                  </div>
-                </div>
-                
-                {review.feedback && <p className="text-gray-700 mb-3 text-sm leading-relaxed">
-                    "{review.feedback}"
-                  </p>}
-                
-                {review.tags && review.tags.length > 0 && <div className="flex flex-wrap gap-2">
-                    {review.tags.map((tag, index) => <span key={index} className="px-2 py-1 bg-[#E94E77]/10 text-[#E94E77] text-xs rounded-full font-medium">
-                        {tag}
-                      </span>)}
-                  </div>}
-              </CardContent>
-            </Card>)}
-        </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <div className="text-center py-12">
+                <MessageSquare className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">{t.noPendingReviews}</h3>
+                <p className="text-gray-500 mb-6">{t.noPendingReviewsDesc}</p>
+                <Button onClick={() => navigate('/collaborations')} className="bg-[#E94E77] hover:bg-[#E94E77]/90">
+                  {t.exploreCollabs}
+                </Button>
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="completed" className="space-y-4 mt-6">
+            {completedReviews.length > 0 ? (
+              completedReviews.map(review => (
+                <Card key={review.id} className="bg-white">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          {renderStars(review.rating)}
+                          <span className="text-sm text-gray-500">
+                            {new Date(review.date).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US')}
+                          </span>
+                        </div>
+                        <h3 className="font-medium text-gray-900 mb-1">
+                          {review.projectTitle}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-1">
+                          {language === 'es' ? 'por' : 'by'} {review.reviewerName}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {review.feedback && (
+                      <p className="text-gray-700 mb-3 text-sm leading-relaxed">
+                        "{review.feedback}"
+                      </p>
+                    )}
+                    
+                    {review.tags && review.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {review.tags.map((tag, index) => (
+                          <span key={index} className="px-2 py-1 bg-[#E94E77]/10 text-[#E94E77] text-xs rounded-full font-medium">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <div className="text-center py-12">
+                <Star className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">{t.noReviews}</h3>
+                <p className="text-gray-500 mb-6">{t.noReviewsDesc}</p>
+                <Button onClick={() => navigate('/collaborations')} className="bg-[#E94E77] hover:bg-[#E94E77]/90">
+                  {t.exploreCollabs}
+                </Button>
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>;
 };
+
 export default ReviewsPage;
