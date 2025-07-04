@@ -1,9 +1,11 @@
+
 import { useState } from 'react';
-import { ArrowLeft, Star, MessageSquare, TrendingUp, Award, Languages } from 'lucide-react';
+import { ArrowLeft, Star, Languages, Eye, Heart, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 const ReviewsPage = () => {
   const navigate = useNavigate();
   const [language, setLanguage] = useState<'es' | 'en'>('es');
@@ -11,209 +13,250 @@ const ReviewsPage = () => {
   // Translation object
   const translations = {
     es: {
-      title: "Mis Reseñas",
-      subtitle: "Todas las reseñas recibidas",
-      average: "Promedio",
-      totalReviews: "Total Reseñas",
-      mostCommon: "Más Común",
-      fiveStars: "5 Estrellas",
-      ratingDistribution: "Distribución de Calificaciones",
-      recentReviews: "Reseñas Recientes",
-      noReviews: "Aún no tienes reseñas",
-      noReviewsDesc: "Completa tu primera colaboración para recibir reseñas de restaurantes.",
-      exploreCollabs: "Explorar Colaboraciones"
+      title: "Rupo Benarroch",
+      reviews: "Reviews",
+      views: "Views", 
+      likes: "Likes",
+      toReview: "To review",
+      yourReviews: "Your reviews",
+      daysAgo: "d ago",
+      more: "more",
+      noReviews: "No hay reseñas pendientes",
+      noReviewsDesc: "Completa colaboraciones para recibir invitaciones de reseña."
     },
     en: {
-      title: "My Reviews",
-      subtitle: "All received reviews",
-      average: "Average",
-      totalReviews: "Total Reviews",
-      mostCommon: "Most Common",
-      fiveStars: "5 Stars",
-      ratingDistribution: "Rating Distribution",
-      recentReviews: "Recent Reviews",
-      noReviews: "You don't have reviews yet",
-      noReviewsDesc: "Complete your first collaboration to receive reviews from restaurants.",
-      exploreCollabs: "Explore Collaborations"
+      title: "Rupo Benarroch",
+      reviews: "Reviews",
+      views: "Views",
+      likes: "Likes", 
+      toReview: "To review",
+      yourReviews: "Your reviews",
+      daysAgo: "d ago",
+      more: "more",
+      noReviews: "No pending reviews",
+      noReviewsDesc: "Complete collaborations to receive review invitations."
     }
   };
+
   const t = translations[language];
 
-  // Mock data - in real app this would come from API
-  const reviewStats = {
-    averageRating: 4.7,
-    totalReviews: 23,
-    mostCommonRating: 5,
-    ratingDistribution: {
-      5: 15,
-      4: 6,
-      3: 2,
-      2: 0,
-      1: 0
-    }
+  // Mock data for stats
+  const stats = {
+    reviews: 13,
+    views: '2.7K',
+    likes: 3
   };
-  const reviews = [{
-    id: 1,
-    rating: 5,
-    feedback: language === 'es' ? "Excelente colaboración! El contenido fue de muy alta calidad y se entregó a tiempo. Muy profesional." : "Excellent collaboration! The content was of very high quality and delivered on time. Very professional.",
-    projectTitle: language === 'es' ? "Campaña Verano 2024 - Restaurante La Moderna" : "Summer 2024 Campaign - La Moderna Restaurant",
-    reviewerName: "Restaurante La Moderna",
-    reviewerType: "restaurant",
-    date: "2024-01-15",
-    tags: language === 'es' ? ["Profesional", "Puntual", "Gran Contenido"] : ["Professional", "Punctual", "Great Content"]
-  }, {
-    id: 2,
-    rating: 4,
-    feedback: language === 'es' ? "Buena experiencia general. Las fotos quedaron muy bien, aunque hubo un pequeño retraso en la entrega." : "Good overall experience. The photos turned out very well, although there was a small delay in delivery.",
-    projectTitle: language === 'es' ? "Lanzamiento Menú Otoño - Bistro Central" : "Fall Menu Launch - Bistro Central",
-    reviewerName: "Bistro Central",
-    reviewerType: "restaurant",
-    date: "2024-01-10",
-    tags: language === 'es' ? ["Creativo", "Buena Calidad"] : ["Creative", "Good Quality"]
-  }, {
-    id: 3,
-    rating: 5,
-    feedback: language === 'es' ? "Increíble trabajo! Las stories tuvieron un engagement altísimo y trajeron muchos clientes nuevos." : "Incredible work! The stories had very high engagement and brought many new customers.",
-    projectTitle: language === 'es' ? "Apertura Nueva Sucursal - Pizza Express" : "New Branch Opening - Pizza Express",
-    reviewerName: "Pizza Express",
-    reviewerType: "restaurant",
-    date: "2024-01-08",
-    tags: language === 'es' ? ["Profesional", "Gran Alcance", "Resultados Excelentes"] : ["Professional", "Great Reach", "Excellent Results"]
-  }];
+
+  // Mock data for reviews to complete
+  const reviewsToComplete = [
+    {
+      id: 1,
+      restaurantName: "Restaurante Desde 1911",
+      projectTitle: "Campaña Verano 2024",
+      daysAgo: 20,
+      collaborationDate: "2024-01-15"
+    },
+    {
+      id: 2,
+      restaurantName: "marmitón", 
+      projectTitle: "Lanzamiento Menú Otoño",
+      daysAgo: 24,
+      collaborationDate: "2024-01-10"
+    }
+  ];
+
+  // Mock data for completed reviews
+  const completedReviews = [
+    {
+      id: 1,
+      restaurantName: "Restaurante Desde 1911",
+      rating: 5,
+      review: "Si tuviese que elegir una última cena, sin duda sería en DESDE 1911 No te lo voy a explicar, porque no lo vas a entender... Tienes que ir y punto! Sin du...",
+      daysAgo: 20,
+      views: 267,
+      likes: 0,
+      showMore: true
+    },
+    {
+      id: 2,
+      restaurantName: "marmitón",
+      rating: 5,
+      review: "Lo mejor de la latina!!!Siempre siempre es un acierto",
+      daysAgo: 24,
+      views: 5,
+      likes: 0
+    },
+    {
+      id: 3,
+      restaurantName: "Mi Compa Chava",
+      rating: 5,
+      review: "Maravilloso y creativo lugar!!! Me encantó probar algo distinto en México",
+      date: "Apr 18, 2025",
+      views: 402,
+      likes: 0
+    },
+    {
+      id: 4,
+      restaurantName: "Joe's Pizza NYC",
+      rating: 5,
+      review: "Probando todo lo que mis panas me recomiendan, esta vez toco @JoesPizzaNYC Una pizza finita con muy buena base y buen crust ;)",
+      date: "Feb 21, 2025",
+      views: 0,
+      likes: 0
+    }
+  ];
+
   const handleBack = () => {
     navigate('/');
   };
-  const renderStars = (rating: number, size: 'sm' | 'md' | 'lg' = 'md') => {
-    const sizeClasses = {
-      sm: 'w-3 h-3',
-      md: 'w-4 h-4',
-      lg: 'w-5 h-5'
-    };
-    return <div className="flex items-center space-x-1">
-        {[1, 2, 3, 4, 5].map(star => <Star key={star} className={`${sizeClasses[size]} ${star <= rating ? 'fill-[#FFC107] text-[#FFC107]' : 'text-gray-300'}`} />)}
-      </div>;
+
+  const renderStars = (rating: number) => {
+    return (
+      <div className="flex items-center space-x-1">
+        {[1, 2, 3, 4, 5].map(star => (
+          <Star
+            key={star}
+            className={`w-4 h-4 ${star <= rating ? 'fill-[#FFC107] text-[#FFC107]' : 'text-gray-300'}`}
+          />
+        ))}
+      </div>
+    );
   };
-  return <div className="min-h-screen bg-gray-50">
+
+  return (
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <button onClick={handleBack} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
-            </button>
-            <div>
-              <h1 className="text-xl font-semibold text-gray-900">{t.title}</h1>
-              <p className="text-sm text-gray-500">{t.subtitle}</p>
-            </div>
-          </div>
+      <div className="bg-black px-4 py-4">
+        <div className="flex items-center justify-between mb-6">
+          <button onClick={handleBack} className="p-2 hover:bg-gray-800 rounded-full transition-colors">
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
           
-          {/* Language Selector */}
           <div className="flex items-center space-x-2">
-            <Languages className="w-4 h-4 text-gray-500" />
+            <Languages className="w-4 h-4 text-gray-400" />
             <Select value={language} onValueChange={(value: 'es' | 'en') => setLanguage(value)}>
-              <SelectTrigger className="w-20">
+              <SelectTrigger className="w-20 bg-gray-800 border-gray-700 text-white">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="es">ES</SelectItem>
-                <SelectItem value="en">EN</SelectItem>
+              <SelectContent className="bg-gray-800 border-gray-700">
+                <SelectItem value="es" className="text-white">ES</SelectItem>
+                <SelectItem value="en" className="text-white">EN</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
-      </div>
 
-      <div className="px-4 py-6 space-y-6">
-        {/* Stats Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="bg-white">
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center mb-2">
-                {renderStars(Math.round(reviewStats.averageRating), 'sm')}
-              </div>
-              <div className="text-2xl font-bold text-[#E94E77]">
-                {reviewStats.averageRating}
-              </div>
-              <div className="text-xs text-gray-500">{t.average}</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white">
-            <CardContent className="p-4 text-center">
-              <MessageSquare className="w-6 h-6 mx-auto mb-2 text-[#E94E77]" />
-              <div className="text-2xl font-bold text-gray-900">
-                {reviewStats.totalReviews}
-              </div>
-              <div className="text-xs text-gray-500">{t.totalReviews}</div>
-            </CardContent>
-          </Card>
-
-          
-
-          
+        {/* Profile Section */}
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-white">{t.title}</h1>
+          <div className="w-16 h-16 rounded-full bg-gray-700 overflow-hidden">
+            <img
+              src="/lovable-uploads/26ce4d51-7cef-481d-8b86-af6c758c3760.png"
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
 
-        {/* Rating Distribution */}
-        <Card className="bg-white">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold">{t.ratingDistribution}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {[5, 4, 3, 2, 1].map(rating => {
-            const count = reviewStats.ratingDistribution[rating as keyof typeof reviewStats.ratingDistribution];
-            const percentage = count / reviewStats.totalReviews * 100;
-            return <div key={rating} className="flex items-center space-x-3">
-                  <div className="flex items-center space-x-1 w-16">
-                    <span className="text-sm font-medium">{rating}</span>
-                    <Star className="w-3 h-3 fill-[#FFC107] text-[#FFC107]" />
-                  </div>
-                  <div className="flex-1 bg-gray-200 rounded-full h-2">
-                    <div className="bg-[#E94E77] h-2 rounded-full transition-all duration-300" style={{
-                  width: `${percentage}%`
-                }}></div>
-                  </div>
-                  <span className="text-sm text-gray-600 w-8">{count}</span>
-                </div>;
-          })}
-          </CardContent>
-        </Card>
+        {/* Stats */}
+        <div className="flex items-center space-x-8 mb-6">
+          <div className="text-center">
+            <div className="text-2xl font-bold">{stats.reviews}</div>
+            <div className="text-gray-400 text-sm">{t.reviews}</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold">{stats.views}</div>
+            <div className="text-gray-400 text-sm">{t.views}</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold">{stats.likes}</div>
+            <div className="text-gray-400 text-sm">{t.likes}</div>
+          </div>
+        </div>
+      </div>
 
-        {/* Reviews List */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">{t.recentReviews}</h2>
-          
-          {reviews.map(review => <Card key={review.id} className="bg-white">
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      {renderStars(review.rating)}
-                      <span className="text-sm text-gray-500">
-                        {new Date(review.date).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US')}
-                      </span>
-                    </div>
-                    <h3 className="font-medium text-gray-900 mb-1">
-                      {review.projectTitle}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-1">
-                      {language === 'es' ? 'por' : 'by'} {review.reviewerName}
-                    </p>
+      {/* Tabs */}
+      <Tabs defaultValue="your-reviews" className="w-full">
+        <TabsList className="w-full bg-black border-b border-gray-800 rounded-none h-12">
+          <TabsTrigger 
+            value="to-review" 
+            className="flex-1 text-gray-400 data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-white data-[state=active]:bg-transparent bg-transparent rounded-none"
+          >
+            {t.toReview}
+          </TabsTrigger>
+          <TabsTrigger 
+            value="your-reviews"
+            className="flex-1 text-gray-400 data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-white data-[state=active]:bg-transparent bg-transparent rounded-none"
+          >
+            {t.yourReviews}
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="to-review" className="mt-0">
+          <div className="px-4 py-4 space-y-4">
+            {reviewsToComplete.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-400 mb-2">{t.noReviews}</p>
+                <p className="text-gray-500 text-sm">{t.noReviewsDesc}</p>
+              </div>
+            ) : (
+              reviewsToComplete.map(review => (
+                <Card key={review.id} className="bg-gray-900 border-gray-800">
+                  <CardContent className="p-4">
+                    <h3 className="font-medium text-white mb-2">{review.restaurantName}</h3>
+                    <p className="text-gray-400 text-sm mb-2">{review.projectTitle}</p>
+                    <p className="text-gray-500 text-xs">{review.daysAgo}{t.daysAgo}</p>
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="your-reviews" className="mt-0">
+          <div className="px-4 py-4 space-y-4">
+            {completedReviews.map(review => (
+              <div key={review.id} className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-medium text-white">{review.restaurantName}</h3>
+                  <Trash2 className="w-4 h-4 text-gray-500" />
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  {renderStars(review.rating)}
+                  <span className="text-gray-400 text-sm">
+                    · {review.daysAgo ? `${review.daysAgo}${t.daysAgo}` : review.date}
+                  </span>
+                </div>
+                
+                <p className="text-white text-sm leading-relaxed">
+                  {review.review}
+                  {review.showMore && (
+                    <span className="text-gray-400 ml-1">{t.more}</span>
+                  )}
+                </p>
+                
+                <div className="flex items-center space-x-4 text-gray-400">
+                  <div className="flex items-center space-x-1">
+                    <Eye className="w-4 h-4" />
+                    <span className="text-sm">{review.views}</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Heart className="w-4 h-4" />
+                    <span className="text-sm">{review.likes}</span>
                   </div>
                 </div>
                 
-                {review.feedback && <p className="text-gray-700 mb-3 text-sm leading-relaxed">
-                    "{review.feedback}"
-                  </p>}
-                
-                {review.tags && review.tags.length > 0 && <div className="flex flex-wrap gap-2">
-                    {review.tags.map((tag, index) => <span key={index} className="px-2 py-1 bg-[#E94E77]/10 text-[#E94E77] text-xs rounded-full font-medium">
-                        {tag}
-                      </span>)}
-                  </div>}
-              </CardContent>
-            </Card>)}
-        </div>
-      </div>
-    </div>;
+                {review.id !== completedReviews[completedReviews.length - 1].id && (
+                  <div className="border-b border-gray-800 pt-4"></div>
+                )}
+              </div>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
 };
+
 export default ReviewsPage;
