@@ -21,7 +21,7 @@ const ProfileSidebar = ({ onClose }: ProfileSidebarProps) => {
       title: "Resenas",
       icon: Star,
       onClick: () => {
-        console.log('Navigate to reviews');
+        navigate('/reviews');
         onClose();
       }
     },
