@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SimpleLandingPage from "./pages/SimpleLandingPage";
 import ReviewsPage from "./pages/ReviewsPage";
+import ReviewFormPage from "./pages/ReviewFormPage";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<SimpleLandingPage />} />
           <Route path="/reviews" element={<ReviewsPage />} />
+          <Route path="/review/:id" element={<ReviewFormPage />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

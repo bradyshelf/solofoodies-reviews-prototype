@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { ArrowLeft, Star, MessageSquare, TrendingUp, Award, Languages } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -111,6 +110,10 @@ const ReviewsPage = () => {
 
   const handleBack = () => {
     navigate('/');
+  };
+
+  const handlePendingReviewClick = (reviewId: number) => {
+    navigate(`/review/${reviewId}`);
   };
 
   const renderStars = (rating: number, size: 'sm' | 'md' | 'lg' = 'md') => {
@@ -235,7 +238,11 @@ const ReviewsPage = () => {
           <TabsContent value="pending" className="space-y-4 mt-6">
             {pendingReviews.length > 0 ? (
               pendingReviews.map(review => (
-                <Card key={review.id} className="bg-white">
+                <Card 
+                  key={review.id} 
+                  className="bg-white cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => handlePendingReviewClick(review.id)}
+                >
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
@@ -254,6 +261,9 @@ const ReviewsPage = () => {
                         <p className="text-sm text-yellow-600">
                           {review.description}
                         </p>
+                      </div>
+                      <div className="text-sm text-gray-400">
+                        {language === 'es' ? 'Toca para revisar' : 'Tap to review'}
                       </div>
                     </div>
                   </CardContent>
