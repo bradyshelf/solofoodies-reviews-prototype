@@ -1,12 +1,46 @@
 
 import { useState } from 'react';
-import { ArrowLeft, Star, MessageSquare, TrendingUp, Award } from 'lucide-react';
+import { ArrowLeft, Star, MessageSquare, TrendingUp, Award, Languages } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const ReviewsPage = () => {
   const navigate = useNavigate();
+  const [language, setLanguage] = useState<'es' | 'en'>('es');
+  
+  // Translation object
+  const translations = {
+    es: {
+      title: "Mis Reseñas",
+      subtitle: "Todas las reseñas recibidas",
+      average: "Promedio",
+      totalReviews: "Total Reseñas",
+      mostCommon: "Más Común",
+      fiveStars: "5 Estrellas",
+      ratingDistribution: "Distribución de Calificaciones",
+      recentReviews: "Reseñas Recientes",
+      noReviews: "Aún no tienes reseñas",
+      noReviewsDesc: "Completa tu primera colaboración para recibir reseñas de restaurantes.",
+      exploreCollabs: "Explorar Colaboraciones"
+    },
+    en: {
+      title: "My Reviews",
+      subtitle: "All received reviews",
+      average: "Average",
+      totalReviews: "Total Reviews",
+      mostCommon: "Most Common",
+      fiveStars: "5 Stars",
+      ratingDistribution: "Rating Distribution",
+      recentReviews: "Recent Reviews",
+      noReviews: "You don't have reviews yet",
+      noReviewsDesc: "Complete your first collaboration to receive reviews from restaurants.",
+      exploreCollabs: "Explore Collaborations"
+    }
+  };
+
+  const t = translations[language];
   
   // Mock data - in real app this would come from API
   const reviewStats = {
@@ -26,32 +60,50 @@ const ReviewsPage = () => {
     {
       id: 1,
       rating: 5,
-      feedback: "Excelente colaboración! El contenido fue de muy alta calidad y se entregó a tiempo. Muy profesional.",
-      projectTitle: "Campaña Verano 2024 - Restaurante La Moderna",
+      feedback: language === 'es' 
+        ? "Excelente colaboración! El contenido fue de muy alta calidad y se entregó a tiempo. Muy profesional."
+        : "Excellent collaboration! The content was of very high quality and delivered on time. Very professional.",
+      projectTitle: language === 'es'
+        ? "Campaña Verano 2024 - Restaurante La Moderna"
+        : "Summer 2024 Campaign - La Moderna Restaurant",
       reviewerName: "Restaurante La Moderna",
       reviewerType: "restaurant",
       date: "2024-01-15",
-      tags: ["Profesional", "Puntual", "Gran Contenido"]
+      tags: language === 'es' 
+        ? ["Profesional", "Puntual", "Gran Contenido"]
+        : ["Professional", "Punctual", "Great Content"]
     },
     {
       id: 2,
       rating: 4,
-      feedback: "Buena experiencia general. Las fotos quedaron muy bien, aunque hubo un pequeño retraso en la entrega.",
-      projectTitle: "Lanzamiento Menú Otoño - Bistro Central",
+      feedback: language === 'es'
+        ? "Buena experiencia general. Las fotos quedaron muy bien, aunque hubo un pequeño retraso en la entrega."
+        : "Good overall experience. The photos turned out very well, although there was a small delay in delivery.",
+      projectTitle: language === 'es'
+        ? "Lanzamiento Menú Otoño - Bistro Central"
+        : "Fall Menu Launch - Bistro Central",
       reviewerName: "Bistro Central",
       reviewerType: "restaurant", 
       date: "2024-01-10",
-      tags: ["Creativo", "Buena Calidad"]
+      tags: language === 'es'
+        ? ["Creativo", "Buena Calidad"]
+        : ["Creative", "Good Quality"]
     },
     {
       id: 3,
       rating: 5,
-      feedback: "Increíble trabajo! Las stories tuvieron un engagement altísimo y trajeron muchos clientes nuevos.",
-      projectTitle: "Apertura Nueva Sucursal - Pizza Express",
+      feedback: language === 'es'
+        ? "Increíble trabajo! Las stories tuvieron un engagement altísimo y trajeron muchos clientes nuevos."
+        : "Incredible work! The stories had very high engagement and brought many new customers.",
+      projectTitle: language === 'es'
+        ? "Apertura Nueva Sucursal - Pizza Express"
+        : "New Branch Opening - Pizza Express",
       reviewerName: "Pizza Express",
       reviewerType: "restaurant",
       date: "2024-01-08",
-      tags: ["Profesional", "Gran Alcance", "Resultados Excelentes"]
+      tags: language === 'es'
+        ? ["Profesional", "Gran Alcance", "Resultados Excelentes"]
+        : ["Professional", "Great Reach", "Excellent Results"]
     }
   ];
 
@@ -84,16 +136,32 @@ const ReviewsPage = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-4">
-        <div className="flex items-center space-x-3">
-          <button 
-            onClick={handleBack}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-gray-600" />
-          </button>
-          <div>
-            <h1 className="text-xl font-semibold text-gray-900">Mis Reseñas</h1>
-            <p className="text-sm text-gray-500">Todas las reseñas recibidas</p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <button 
+              onClick={handleBack}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5 text-gray-600" />
+            </button>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900">{t.title}</h1>
+              <p className="text-sm text-gray-500">{t.subtitle}</p>
+            </div>
+          </div>
+          
+          {/* Language Selector */}
+          <div className="flex items-center space-x-2">
+            <Languages className="w-4 h-4 text-gray-500" />
+            <Select value={language} onValueChange={(value: 'es' | 'en') => setLanguage(value)}>
+              <SelectTrigger className="w-20">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="es">ES</SelectItem>
+                <SelectItem value="en">EN</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
@@ -109,7 +177,7 @@ const ReviewsPage = () => {
               <div className="text-2xl font-bold text-[#E94E77]">
                 {reviewStats.averageRating}
               </div>
-              <div className="text-xs text-gray-500">Promedio</div>
+              <div className="text-xs text-gray-500">{t.average}</div>
             </CardContent>
           </Card>
 
@@ -119,7 +187,7 @@ const ReviewsPage = () => {
               <div className="text-2xl font-bold text-gray-900">
                 {reviewStats.totalReviews}
               </div>
-              <div className="text-xs text-gray-500">Total Reseñas</div>
+              <div className="text-xs text-gray-500">{t.totalReviews}</div>
             </CardContent>
           </Card>
 
@@ -129,7 +197,7 @@ const ReviewsPage = () => {
               <div className="text-2xl font-bold text-gray-900">
                 {reviewStats.mostCommonRating}
               </div>
-              <div className="text-xs text-gray-500">Más Común</div>
+              <div className="text-xs text-gray-500">{t.mostCommon}</div>
             </CardContent>
           </Card>
 
@@ -139,7 +207,7 @@ const ReviewsPage = () => {
               <div className="text-2xl font-bold text-gray-900">
                 {Math.round((reviewStats.ratingDistribution[5] / reviewStats.totalReviews) * 100)}%
               </div>
-              <div className="text-xs text-gray-500">5 Estrellas</div>
+              <div className="text-xs text-gray-500">{t.fiveStars}</div>
             </CardContent>
           </Card>
         </div>
@@ -147,7 +215,7 @@ const ReviewsPage = () => {
         {/* Rating Distribution */}
         <Card className="bg-white">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold">Distribución de Calificaciones</CardTitle>
+            <CardTitle className="text-lg font-semibold">{t.ratingDistribution}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {[5, 4, 3, 2, 1].map((rating) => {
@@ -175,7 +243,7 @@ const ReviewsPage = () => {
 
         {/* Reviews List */}
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Reseñas Recientes</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t.recentReviews}</h2>
           
           {reviews.map((review) => (
             <Card key={review.id} className="bg-white">
@@ -185,14 +253,14 @@ const ReviewsPage = () => {
                     <div className="flex items-center space-x-2 mb-1">
                       {renderStars(review.rating)}
                       <span className="text-sm text-gray-500">
-                        {new Date(review.date).toLocaleDateString('es-ES')}
+                        {new Date(review.date).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US')}
                       </span>
                     </div>
                     <h3 className="font-medium text-gray-900 mb-1">
                       {review.projectTitle}
                     </h3>
                     <p className="text-sm text-gray-600 mb-1">
-                      por {review.reviewerName}
+                      {language === 'es' ? 'por' : 'by'} {review.reviewerName}
                     </p>
                   </div>
                 </div>
@@ -219,27 +287,6 @@ const ReviewsPage = () => {
             </Card>
           ))}
         </div>
-
-        {/* No Reviews State (commented out since we have mock data) */}
-        {/* {reviews.length === 0 && (
-          <Card className="bg-white">
-            <CardContent className="p-8 text-center">
-              <Star className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Aún no tienes reseñas
-              </h3>
-              <p className="text-gray-500 mb-4">
-                Completa tu primera colaboración para recibir reseñas de restaurantes.
-              </p>
-              <Button 
-                onClick={() => navigate('/collaborations')}
-                className="bg-[#E94E77] hover:bg-[#E94E77]/90"
-              >
-                Explorar Colaboraciones
-              </Button>
-            </CardContent>
-          </Card>
-        )} */}
       </div>
     </div>
   );
