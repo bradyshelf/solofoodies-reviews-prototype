@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { ArrowLeft, Star, MessageSquare, TrendingUp, Award, Languages } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +15,7 @@ const ReviewsPage = () => {
     es: {
       title: "Mis Reseñas",
       subtitle: "Todas las reseñas recibidas",
-      average: "Promedio",
+      average: "Promedio", 
       totalReviews: "Total Reseñas",
       mostCommon: "Más Común",
       fiveStars: "5 Estrellas",
@@ -33,7 +32,7 @@ const ReviewsPage = () => {
       title: "My Reviews",
       subtitle: "All received reviews",
       average: "Average",
-      totalReviews: "Total Reviews",
+      totalReviews: "Total Reviews", 
       mostCommon: "Most Common",
       fiveStars: "5 Stars",
       ratingDistribution: "Rating Distribution",
@@ -120,7 +119,7 @@ const ReviewsPage = () => {
   const renderStars = (rating: number, size: 'sm' | 'md' | 'lg' = 'md') => {
     const sizeClasses = {
       sm: 'w-3 h-3',
-      md: 'w-4 h-4',
+      md: 'w-4 h-4', 
       lg: 'w-5 h-5'
     };
     return <div className="flex items-center space-x-1">
@@ -158,7 +157,7 @@ const ReviewsPage = () => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-4xl mx-auto px-8 py-6 space-y-6">
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card className="bg-white">
