@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { ArrowLeft, Star, MessageSquare, TrendingUp, Award, Languages } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -130,7 +131,7 @@ const ReviewsPage = () => {
   return <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-4">
-        <div className="flex items-center justify-between">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button onClick={handleBack} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
               <ArrowLeft className="w-5 h-5 text-gray-600" />
@@ -157,7 +158,7 @@ const ReviewsPage = () => {
         </div>
       </div>
 
-      <div className="px-4 py-6 space-y-6">
+      <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card className="bg-white">
