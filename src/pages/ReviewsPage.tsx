@@ -157,7 +157,7 @@ const ReviewsPage = () => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-8 py-6 space-y-6">
+      <div className="max-w-4xl mx-auto px-16 py-6 space-y-6">
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card className="bg-white">
