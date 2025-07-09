@@ -68,27 +68,27 @@ const ReviewFormPage = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-4 py-4">
-        <div className="flex items-center space-x-3">
+        <div className="max-w-4xl lg:max-w-screen-xl mx-auto flex items-center space-x-3">
           <button
             onClick={handleBack}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-gray-600" />
           </button>
-          <div>
+          <div className="text-left">
             <h1 className="text-xl font-semibold text-gray-900">Escribir Reseña</h1>
             <p className="text-sm text-gray-500">Califica tu experiencia de colaboración</p>
           </div>
         </div>
       </div>
 
-      <div className="px-4 py-6 space-y-6">
+      <div className="max-w-4xl lg:max-w-screen-xl mx-auto px-4 py-6 space-y-6">
         {/* Project Info */}
         <Card className="bg-white">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold">Detalles de la Colaboración</CardTitle>
+            <CardTitle className="text-lg font-semibold text-left">Detalles de la Colaboración</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-3 text-left">
             <div>
               <h3 className="font-medium text-gray-900">{pendingReview.projectTitle}</h3>
               <p className="text-sm text-gray-600">con {pendingReview.collaboratorName}</p>
@@ -109,10 +109,10 @@ const ReviewFormPage = () => {
         {/* Rating Section */}
         <Card className="bg-white">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold">Calificación</CardTitle>
+            <CardTitle className="text-lg font-semibold text-left">Calificación</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="text-center">
+            <div className="text-left">
               <p className="text-sm text-gray-600 mb-4">
                 ¿Cómo calificarías esta colaboración?
               </p>
@@ -129,14 +129,14 @@ const ReviewFormPage = () => {
         {/* Feedback Section */}
         <Card className="bg-white">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold">Comentarios (Opcional)</CardTitle>
+            <CardTitle className="text-lg font-semibold text-left">Comentarios (Opcional)</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="text-left">
             <Textarea
               placeholder="Comparte tu experiencia sobre esta colaboración..."
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-              className="min-h-32 resize-none"
+              className="min-h-32 resize-none text-left"
               maxLength={500}
             />
             <p className="text-xs text-gray-500 mt-2">
