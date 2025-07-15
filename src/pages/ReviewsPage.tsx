@@ -161,7 +161,7 @@ const ReviewsPage = () => {
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card className="bg-white">
-            <CardContent className="p-4 text-center">
+            <CardContent className="p-4 text-center flex flex-col justify-center h-full">
               <div className="flex items-center justify-center mb-2">
                 {renderStars(Math.round(reviewStats.averageRating), 'sm')}
               </div>
@@ -173,7 +173,7 @@ const ReviewsPage = () => {
           </Card>
 
           <Card className="bg-white">
-            <CardContent className="p-4 text-center">
+            <CardContent className="p-4 text-center flex flex-col justify-center h-full">
               <MessageSquare className="w-6 h-6 mx-auto mb-2 text-[#E94E77]" />
               <div className="text-2xl font-bold text-gray-900">
                 {reviewStats.totalReviews}
@@ -183,7 +183,7 @@ const ReviewsPage = () => {
           </Card>
 
           <Card className="bg-white">
-            <CardContent className="p-4 text-center">
+            <CardContent className="p-4 text-center flex flex-col justify-center h-full">
               <TrendingUp className="w-6 h-6 mx-auto mb-2 text-[#E94E77]" />
               <div className="text-2xl font-bold text-gray-900">
                 {reviewStats.mostCommonRating}
@@ -193,7 +193,7 @@ const ReviewsPage = () => {
           </Card>
 
           <Card className="bg-white">
-            <CardContent className="p-4 text-center">
+            <CardContent className="p-4 text-center flex flex-col justify-center h-full">
               <Award className="w-6 h-6 mx-auto mb-2 text-[#E94E77]" />
               <div className="text-2xl font-bold text-gray-900">
                 {reviewStats.ratingDistribution[5]}
