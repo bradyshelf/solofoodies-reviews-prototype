@@ -122,7 +122,7 @@ const ReviewsPage = () => {
       md: 'w-4 h-4', 
       lg: 'w-5 h-5'
     };
-    return <div className="flex items-center space-x-1 -mt-3">
+    return <div className="flex items-center space-x-1 -mt-2">
         {[1, 2, 3, 4, 5].map(star => <Star key={star} className={`${sizeClasses[size]} ${star <= rating ? 'fill-[#FFC107] text-[#FFC107]' : 'text-gray-300'}`} />)}
       </div>;
   };
