@@ -161,7 +161,7 @@ const ReviewsPage = () => {
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card className="bg-white">
-            <CardContent className="p-4 text-center">
+            <CardContent className="p-4">
               <div className="flex items-center justify-center mb-2">
                 {renderStars(Math.round(reviewStats.averageRating), 'sm')}
               </div>
