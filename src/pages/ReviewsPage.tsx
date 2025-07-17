@@ -20,7 +20,7 @@ const ReviewsPage = () => {
       mostCommon: "Más Común",
       fiveStars: "5 Estrellas",
       ratingDistribution: "Distribución de Calificaciones",
-      recentReviews: "Reseñas Recientes",
+      recentReviews: "Reseñas",
       pendingReviews: "Por Completar",
       noReviews: "Aún no tienes reseñas",
       noReviewsDesc: "Completa tu primera colaboración para recibir reseñas de restaurantes.",
