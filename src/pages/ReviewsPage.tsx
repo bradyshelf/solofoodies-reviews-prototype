@@ -123,7 +123,7 @@ const ReviewsPage = () => {
       lg: 'w-5 h-5'
     };
     return <div className="flex items-center space-x-1 -mt-2">
-        {[1, 2, 3, 4, 5].map(star => <Star key={star} className={`${sizeClasses[size]} ${star <= rating ? 'fill-[#FFC107] text-[#FFC107]' : 'text-gray-300'}`} />)}
+        {[1, 2, 3, 4, 5].map(star => <Star key={star} className={`${sizeClasses[size]} ${star <= rating ? 'fill-[#FFB800] text-[#FFB800]' : 'text-gray-300'}`} />)}
       </div>;
   };
 
@@ -165,7 +165,7 @@ const ReviewsPage = () => {
               <div className="flex items-center justify-center mb-2">
                 {renderStars(Math.round(reviewStats.averageRating), 'sm')}
               </div>
-              <div className="text-2xl font-bold text-[#E94E77]">
+              <div className="text-2xl font-bold text-gray-900">
                 {reviewStats.averageRating}
               </div>
               <div className="text-xs text-gray-500">{t.average}</div>
@@ -174,7 +174,7 @@ const ReviewsPage = () => {
 
           <Card className="bg-white">
             <CardContent className="p-4 text-center flex flex-col justify-center h-full">
-              <MessageSquare className="w-6 h-6 mx-auto mb-2 text-[#E94E77]" />
+              <MessageSquare className="w-6 h-6 mx-auto mb-2 text-gray-600" />
               <div className="text-2xl font-bold text-gray-900">
                 {reviewStats.totalReviews}
               </div>
@@ -184,7 +184,7 @@ const ReviewsPage = () => {
 
           <Card className="bg-white">
             <CardContent className="p-4 text-center flex flex-col justify-center h-full">
-              <TrendingUp className="w-6 h-6 mx-auto mb-2 text-[#E94E77]" />
+              <TrendingUp className="w-6 h-6 mx-auto mb-2 text-gray-600" />
               <div className="text-2xl font-bold text-gray-900">
                 {reviewStats.mostCommonRating}
               </div>
@@ -194,7 +194,7 @@ const ReviewsPage = () => {
 
           <Card className="bg-white">
             <CardContent className="p-4 text-center flex flex-col justify-center h-full">
-              <Award className="w-6 h-6 mx-auto mb-2 text-[#E94E77]" />
+              <Award className="w-6 h-6 mx-auto mb-2 text-gray-600" />
               <div className="text-2xl font-bold text-gray-900">
                 {reviewStats.ratingDistribution[5]}
               </div>
@@ -215,10 +215,10 @@ const ReviewsPage = () => {
             return <div key={rating} className="flex items-center space-x-3">
                   <div className="flex items-center space-x-1 w-16">
                     <span className="text-sm font-medium">{rating}</span>
-                    <Star className="w-3 h-3 fill-[#FFC107] text-[#FFC107]" />
+                    <Star className="w-3 h-3 fill-[#FFB800] text-[#FFB800]" />
                   </div>
                   <div className="flex-1 bg-gray-200 rounded-full h-2">
-                    <div className="bg-[#E94E77] h-2 rounded-full transition-all duration-300" style={{
+                    <div className="bg-gray-900 h-2 rounded-full transition-all duration-300" style={{
                   width: `${percentage}%`
                 }}></div>
                   </div>
