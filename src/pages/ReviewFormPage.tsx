@@ -182,7 +182,7 @@ const ReviewFormPage = () => {
             </p>
             <Button 
               onClick={handleSuccessDialogClose}
-              className="w-full bg-[#E94E77] hover:bg-[#E94E77]/90"
+              className="w-full bg-blue-600 hover:bg-blue-700"
             >
               Volver a Reseñas
             </Button>
