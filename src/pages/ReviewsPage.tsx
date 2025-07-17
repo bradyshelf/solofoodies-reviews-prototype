@@ -308,16 +308,6 @@ const ReviewsPage = () => {
                         "{review.feedback}"
                       </p>
                     )}
-                    
-                    {review.tags && review.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {review.tags.map((tag, index) => (
-                          <span key={index} className="px-2 py-1 bg-[#E94E77]/10 text-[#E94E77] text-xs rounded-full font-medium">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               ))
