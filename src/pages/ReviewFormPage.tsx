@@ -97,17 +97,11 @@ const ReviewFormPage = () => {
           </CardHeader>
           <CardContent className="space-y-3 text-left">
             <div>
-              <h3 className="font-medium text-gray-900">{pendingReview.projectTitle}</h3>
+              <h3 className="font-medium text-gray-900">Colaboración con {pendingReview.reviewerName}</h3>
               <p className="text-sm text-gray-600">con {pendingReview.collaboratorName}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Fecha de colaboración:</p>
-              <p className="text-sm text-gray-900">
-                {new Date(pendingReview.date).toLocaleDateString('es-ES')}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Descripción:</p>
+              <p className="text-sm text-gray-500">Requerimientos:</p>
               <p className="text-sm text-gray-900">{pendingReview.description}</p>
             </div>
           </CardContent>
