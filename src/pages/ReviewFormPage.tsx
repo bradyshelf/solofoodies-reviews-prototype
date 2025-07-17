@@ -156,7 +156,7 @@ const ReviewFormPage = () => {
         <div className="pt-4">
           <Button
             onClick={handleSubmitReview}
-            className="w-full bg-[#E94E77] hover:bg-[#E94E77]/90 text-white py-3"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
             disabled={rating === 0}
           >
             <Send className="w-4 h-4 mr-2" />
