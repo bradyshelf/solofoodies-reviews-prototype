@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Star, MessageSquare, TrendingUp, Award, Languages, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Star, MessageSquare, TrendingUp, Award, Languages } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -291,7 +291,6 @@ const ReviewsPage = () => {
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-1">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
                           {renderStars(review.rating)}
                           <span className="text-sm text-gray-500">
                             {new Date(review.date).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US')}
