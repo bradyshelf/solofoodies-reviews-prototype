@@ -165,7 +165,7 @@ const ReviewsPage = () => {
               <div className="flex items-center justify-center mb-2">
                 {renderStars(Math.round(reviewStats.averageRating), 'sm')}
               </div>
-              <div className="mt-2">
+              <div className="mt-1">
                 <div className="text-2xl font-bold text-gray-900">
                   {reviewStats.averageRating}
                 </div>
