@@ -1,10 +1,11 @@
 
 import { useState } from 'react';
-import { ArrowLeft, Star, Send } from 'lucide-react';
+import { ArrowLeft, Star, Send, CheckCircle } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const ReviewFormPage = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const ReviewFormPage = () => {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [hoveredRating, setHoveredRating] = useState(0);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   // Mock data - in real app this would come from API based on id
   const pendingReview = {
@@ -40,7 +42,12 @@ const ReviewFormPage = () => {
       reviewId: id
     });
     
-    // Navigate back to reviews page after submission
+    // Show success dialog instead of immediate navigation
+    setShowSuccessDialog(true);
+  };
+
+  const handleSuccessDialogClose = () => {
+    setShowSuccessDialog(false);
     navigate('/reviews');
   };
 
@@ -157,6 +164,31 @@ const ReviewFormPage = () => {
           </Button>
         </div>
       </div>
+
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="max-w-md text-center">
+          <DialogHeader className="space-y-4">
+            <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+              <CheckCircle className="w-8 h-8 text-green-600" />
+            </div>
+            <DialogTitle className="text-xl font-semibold text-gray-900">
+              ¡Reseña Enviada!
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-gray-600">
+              Tu reseña ha sido enviada exitosamente. Gracias por compartir tu experiencia.
+            </p>
+            <Button 
+              onClick={handleSuccessDialogClose}
+              className="w-full bg-[#E94E77] hover:bg-[#E94E77]/90"
+            >
+              Volver a Reseñas
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
