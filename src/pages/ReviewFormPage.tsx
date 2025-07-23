@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 const ReviewFormPage = () => {
   const navigate = useNavigate();
@@ -14,6 +16,7 @@ const ReviewFormPage = () => {
   const [feedback, setFeedback] = useState('');
   const [hoveredRating, setHoveredRating] = useState(0);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [didPost, setDidPost] = useState('');
 
   // Mock data - in real app this would come from API based on id
   const pendingReview = {
@@ -30,8 +33,18 @@ const ReviewFormPage = () => {
   };
 
   const handleSubmitReview = () => {
+    if (!didPost) {
+      alert('Por favor indica si realizaste la publicación');
+      return;
+    }
+    
     if (rating === 0) {
       alert('Por favor selecciona una calificación');
+      return;
+    }
+    
+    if (didPost === 'no' && !feedback.trim()) {
+      alert('Los comentarios son requeridos cuando no se realizó la publicación');
       return;
     }
     
@@ -39,6 +52,7 @@ const ReviewFormPage = () => {
     console.log('Submitting review:', {
       rating,
       feedback,
+      didPost,
       reviewId: id
     });
     
@@ -107,6 +121,28 @@ const ReviewFormPage = () => {
           </CardContent>
         </Card>
 
+        {/* Post Question Section */}
+        <Card className="bg-white">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-left">Publicación</CardTitle>
+          </CardHeader>
+          <CardContent className="text-left">
+            <p className="text-sm text-gray-600 mb-4">
+              ¿Realizaste la publicación acordada?
+            </p>
+            <RadioGroup value={didPost} onValueChange={setDidPost} className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="yes" id="yes" />
+                <Label htmlFor="yes">Sí</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="no" id="no" />
+                <Label htmlFor="no">No</Label>
+              </div>
+            </RadioGroup>
+          </CardContent>
+        </Card>
+
         {/* Rating Section */}
         <Card className="bg-white">
           <CardHeader>
@@ -130,7 +166,9 @@ const ReviewFormPage = () => {
         {/* Feedback Section */}
         <Card className="bg-white">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-left">Comentarios (Opcional)</CardTitle>
+            <CardTitle className="text-lg font-semibold text-left">
+              Comentarios {didPost === 'no' ? '(Requerido)' : '(Opcional)'}
+            </CardTitle>
           </CardHeader>
           <CardContent className="text-left">
             <Textarea
