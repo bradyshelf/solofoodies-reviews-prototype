@@ -29,6 +29,16 @@ const ReviewFormPage = () => {
   });
   const [hoveredRestaurantRating, setHoveredRestaurantRating] = useState('');
 
+  // Foodie review ratings (5 separate questions)
+  const [foodieRatings, setFoodieRatings] = useState({
+    generalExperience: 0,
+    productionSupport: 0,
+    communication: 0,
+    foodPresentation: 0,
+    creatorAppreciation: 0
+  });
+  const [hoveredFoodieRating, setHoveredFoodieRating] = useState('');
+
   // Determine if this is a foodie review based on navigation state
   const isFoodieReview = location.state?.reviewType === 'foodie';
 
@@ -54,6 +64,14 @@ const ReviewFormPage = () => {
     return Math.round((nonZeroRatings.reduce((sum, rating) => sum + rating, 0) / nonZeroRatings.length) * 10) / 10;
   };
 
+  // Calculate average rating for foodie reviews
+  const calculateFoodieAverageRating = () => {
+    const ratings = Object.values(foodieRatings);
+    const nonZeroRatings = ratings.filter(rating => rating > 0);
+    if (nonZeroRatings.length === 0) return 0;
+    return Math.round((nonZeroRatings.reduce((sum, rating) => sum + rating, 0) / nonZeroRatings.length) * 10) / 10;
+  };
+
   const handleSubmitReview = () => {
     // Only check for post question if it's a foodie review
     if (isFoodieReview && !didPost) {
@@ -69,9 +87,10 @@ const ReviewFormPage = () => {
         return;
       }
     } else {
-      // For foodie reviews, check the single rating
-      if (rating === 0) {
-        alert('Por favor selecciona una calificación');
+      // For foodie reviews, check if at least one rating is provided
+      const hasRating = Object.values(foodieRatings).some(rating => rating > 0);
+      if (!hasRating) {
+        alert('Por favor proporciona al menos una calificación');
         return;
       }
     }
@@ -83,10 +102,11 @@ const ReviewFormPage = () => {
     }
     
     // Here you would typically submit to your API
-    const finalRating = isFoodieReview ? rating : calculateAverageRating();
+    const finalRating = isFoodieReview ? calculateFoodieAverageRating() : calculateAverageRating();
     console.log('Submitting review:', {
       rating: finalRating,
       restaurantRatings: !isFoodieReview ? restaurantRatings : undefined,
+      foodieRatings: isFoodieReview ? foodieRatings : undefined,
       feedback,
       didPost,
       reviewId: id
@@ -141,12 +161,40 @@ const ReviewFormPage = () => {
     );
   };
 
+  const renderFoodieStars = (questionKey: string, currentRating: number, interactive = false) => {
+    return (
+      <div className="flex items-center space-x-1">
+        {[1, 2, 3, 4, 5].map(star => (
+          <Star
+            key={star}
+            className={`w-6 h-6 cursor-pointer transition-colors ${
+              star <= (interactive ? (hoveredFoodieRating === questionKey ? currentRating : foodieRatings[questionKey as keyof typeof foodieRatings]) : currentRating)
+                ? 'fill-[#FFC107] text-[#FFC107]'
+                : 'text-gray-300 hover:text-[#FFC107]'
+            }`}
+            onClick={() => interactive && setFoodieRatings(prev => ({...prev, [questionKey]: star}))}
+            onMouseEnter={() => interactive && setHoveredFoodieRating(questionKey)}
+            onMouseLeave={() => interactive && setHoveredFoodieRating('')}
+          />
+        ))}
+      </div>
+    );
+  };
+
   const restaurantQuestions = [
     { key: 'contentQuality', text: '¿Qué te pareció la calidad del contenido publicado?' },
     { key: 'socialImpact', text: '¿Cómo calificarías el impacto de la colaboración en redes sociales?' },
     { key: 'conceptCommunication', text: '¿Qué tan bien comunicó la esencia o concepto?' },
     { key: 'punctualityProfessionalism', text: '¿Fue puntual y profesional durante la visita?' },
     { key: 'creatorSatisfaction', text: '¿Qué tan satisfecho estás con el creador?' }
+  ];
+
+  const foodieQuestions = [
+    { key: 'generalExperience', text: '¿Qué tan buena fue tu experiencia general en el restaurante?' },
+    { key: 'productionSupport', text: '¿Te facilitaron lo necesario para hacer una buena producción (libertad de movimiento, presentación de platos, etc.)?' },
+    { key: 'communication', text: '¿Qué tan clara y fluida fue la comunicación previa a la visita?' },
+    { key: 'foodPresentation', text: '¿La comida estaba bien pensada para fotografía/video?' },
+    { key: 'creatorAppreciation', text: '¿Sentiste que valoraban tu trabajo como creador de contenido?' }
   ];
 
   return (
@@ -215,18 +263,27 @@ const ReviewFormPage = () => {
             <CardHeader>
               <CardTitle className="text-lg font-semibold text-left">Calificación</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-left">
-                <p className="text-sm text-gray-600 mb-4">
-                  ¿Cómo calificarías esta colaboración?
-                </p>
-                {renderStars(true)}
-                {rating > 0 && (
-                  <p className="text-sm text-gray-500 mt-2">
-                    {rating} de 5 estrellas
+            <CardContent className="space-y-6">
+              {foodieQuestions.map((question, index) => (
+                <div key={question.key} className="text-left">
+                  <p className="text-sm text-gray-600 mb-3">
+                    {index + 1}. {question.text}
                   </p>
-                )}
-              </div>
+                  {renderFoodieStars(question.key, foodieRatings[question.key as keyof typeof foodieRatings], true)}
+                  {foodieRatings[question.key as keyof typeof foodieRatings] > 0 && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      {foodieRatings[question.key as keyof typeof foodieRatings]} de 5 estrellas
+                    </p>
+                  )}
+                </div>
+              ))}
+              {calculateFoodieAverageRating() > 0 && (
+                <div className="pt-4 border-t border-gray-200">
+                  <p className="text-sm font-medium text-gray-900">
+                    Calificación promedio: {calculateFoodieAverageRating()} de 5 estrellas
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         ) : (
@@ -285,7 +342,7 @@ const ReviewFormPage = () => {
           <Button
             onClick={handleSubmitReview}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
-            disabled={isFoodieReview ? rating === 0 : !Object.values(restaurantRatings).some(rating => rating > 0)}
+            disabled={isFoodieReview ? !Object.values(foodieRatings).some(rating => rating > 0) : !Object.values(restaurantRatings).some(rating => rating > 0)}
           >
             <Send className="w-4 h-4 mr-2" />
             Enviar Reseña
