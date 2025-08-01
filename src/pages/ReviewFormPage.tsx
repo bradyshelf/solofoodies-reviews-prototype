@@ -51,7 +51,7 @@ const ReviewFormPage = () => {
     const ratings = Object.values(restaurantRatings);
     const nonZeroRatings = ratings.filter(rating => rating > 0);
     if (nonZeroRatings.length === 0) return 0;
-    return Math.round(nonZeroRatings.reduce((sum, rating) => sum + rating, 0) / nonZeroRatings.length);
+    return Math.round((nonZeroRatings.reduce((sum, rating) => sum + rating, 0) / nonZeroRatings.length) * 10) / 10;
   };
 
   const handleSubmitReview = () => {
