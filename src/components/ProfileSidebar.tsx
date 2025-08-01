@@ -5,9 +5,16 @@ import {
   Mail, 
   Bell, 
   LogOut,
-  Star
+  Star,
+  ChevronDown
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface ProfileSidebarProps {
   onClose: () => void;
@@ -17,14 +24,6 @@ const ProfileSidebar = ({ onClose }: ProfileSidebarProps) => {
   const navigate = useNavigate();
 
   const menuItems = [
-    {
-      title: "Resenas",
-      icon: Star,
-      onClick: () => {
-        navigate('/reviews');
-        onClose();
-      }
-    },
     {
       title: "Colaboraciones",
       icon: Heart,
@@ -105,6 +104,39 @@ const ProfileSidebar = ({ onClose }: ProfileSidebarProps) => {
       {/* Menu Items */}
       <div className="flex-1 px-4 py-4">
         <div className="space-y-1">
+          {/* Resenas Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="w-full flex items-center justify-between px-3 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                <div className="flex items-center">
+                  <Star className="w-5 h-5 mr-3 text-gray-600" />
+                  <span className="text-base text-gray-900">Reseñas</span>
+                </div>
+                <ChevronDown className="w-4 h-4 text-gray-600" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48 bg-white">
+              <DropdownMenuItem 
+                onClick={() => {
+                  navigate('/reviews/foodie');
+                  onClose();
+                }}
+                className="cursor-pointer"
+              >
+                Foodie View
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                onClick={() => {
+                  navigate('/reviews/restaurant');
+                  onClose();
+                }}
+                className="cursor-pointer"
+              >
+                Restaurant View
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           {menuItems.map((item) => (
             <button
               key={item.title}
