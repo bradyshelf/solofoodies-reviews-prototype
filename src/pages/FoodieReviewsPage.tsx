@@ -113,7 +113,7 @@ const FoodieReviewsPage = () => {
   };
 
   const handlePendingReviewClick = (reviewId: number) => {
-    navigate(`/review/${reviewId}`);
+    navigate(`/review/${reviewId}`, { state: { reviewType: 'foodie' } });
   };
 
   const renderStars = (rating: number, size: 'sm' | 'md' | 'lg' = 'md') => {

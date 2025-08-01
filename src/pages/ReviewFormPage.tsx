@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { ArrowLeft, Star, Send, CheckCircle } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -11,12 +11,16 @@ import { Label } from '@/components/ui/label';
 
 const ReviewFormPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams();
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [hoveredRating, setHoveredRating] = useState(0);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [didPost, setDidPost] = useState('');
+
+  // Determine if this is a foodie review based on navigation state
+  const isFoodieReview = location.state?.reviewType === 'foodie';
 
   // Mock data - in real app this would come from API based on id
   const pendingReview = {
@@ -33,7 +37,8 @@ const ReviewFormPage = () => {
   };
 
   const handleSubmitReview = () => {
-    if (!didPost) {
+    // Only check for post question if it's a foodie review
+    if (isFoodieReview && !didPost) {
       alert('Por favor indica si realizaste la publicación');
       return;
     }
@@ -43,7 +48,8 @@ const ReviewFormPage = () => {
       return;
     }
     
-    if (didPost === 'no' && !feedback.trim()) {
+    // Only require comments when it's a foodie review and they didn't post
+    if (isFoodieReview && didPost === 'no' && !feedback.trim()) {
       alert('Los comentarios son requeridos cuando no se realizó la publicación');
       return;
     }
@@ -121,27 +127,29 @@ const ReviewFormPage = () => {
           </CardContent>
         </Card>
 
-        {/* Post Question Section */}
-        <Card className="bg-white">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-left">Publicación</CardTitle>
-          </CardHeader>
-          <CardContent className="text-left">
-            <p className="text-sm text-gray-600 mb-4">
-              ¿Realizaste la publicación acordada?
-            </p>
-            <RadioGroup value={didPost} onValueChange={setDidPost} className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="yes" id="yes" />
-                <Label htmlFor="yes">Sí</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="no" id="no" />
-                <Label htmlFor="no">No</Label>
-              </div>
-            </RadioGroup>
-          </CardContent>
-        </Card>
+        {/* Post Question Section - Only for Foodie Reviews */}
+        {isFoodieReview && (
+          <Card className="bg-white">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-left">Publicación</CardTitle>
+            </CardHeader>
+            <CardContent className="text-left">
+              <p className="text-sm text-gray-600 mb-4">
+                ¿Realizaste la publicación acordada?
+              </p>
+              <RadioGroup value={didPost} onValueChange={setDidPost} className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="yes" id="yes" />
+                  <Label htmlFor="yes">Sí</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="no" id="no" />
+                  <Label htmlFor="no">No</Label>
+                </div>
+              </RadioGroup>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Rating Section */}
         <Card className="bg-white">
@@ -167,7 +175,7 @@ const ReviewFormPage = () => {
         <Card className="bg-white">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-left">
-              Comentarios {didPost === 'no' ? '(Requerido)' : '(Opcional)'}
+              Comentarios {(isFoodieReview && didPost === 'no') ? '(Requerido)' : '(Opcional)'}
             </CardTitle>
           </CardHeader>
           <CardContent className="text-left">

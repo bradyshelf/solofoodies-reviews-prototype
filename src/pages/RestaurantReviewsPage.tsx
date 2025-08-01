@@ -113,7 +113,7 @@ const RestaurantReviewsPage = () => {
   };
 
   const handlePendingReviewClick = (reviewId: number) => {
-    navigate(`/review/${reviewId}`);
+    navigate(`/review/${reviewId}`, { state: { reviewType: 'restaurant' } });
   };
 
   const renderStars = (rating: number, size: 'sm' | 'md' | 'lg' = 'md') => {
